@@ -21,3 +21,25 @@ let questions = new Map([
     [10, "Where is Amazon River?"]
 
 ]);
+
+
+function setLocalStorage(){
+        let name=document.getElementById('firstName').value;
+        let noOfQuestions=document.getElementById('number').value;
+        localStorage.setItem("name", name);
+        localStorage.setItem("questions",noOfQuestions)
+
+}
+function getLocalStorageName(){
+        let name=localStorage.getItem('name');
+        console.log(name);
+        return name;
+}
+function getLocalStorageQuestions(){
+    let questions=localStorage.getItem('questions');
+    console.log(questions);
+    return questions;
+}
+
+getLocalStorageName();
+getLocalStorageQuestions();
