@@ -43,3 +43,26 @@ function getLocalStorageQuestions(){
 
 getLocalStorageName();
 getLocalStorageQuestions();
+
+function generateRandomQuestion(){
+    function getRandomQuestions(questionsMap, n) {
+        const questionsArray = Array.from(questionsMap.values());
+        const selectedQuestions = [];
+
+        while (selectedQuestions.length < n && questionsArray.length > 0) {
+            const randomIndex = Math.floor(Math.random() * questionsArray.length);
+            const randomQuestion = questionsArray.splice(randomIndex, 1)[0];
+            selectedQuestions.push(randomQuestion);
+        }
+
+        return selectedQuestions;
+    }
+
+    // Example: Display 5 random questions
+    let numberOfQuestions = getLocalStorageQuestions();
+    const randomQuestions = getRandomQuestions(questions, numberOfQuestions);
+
+    randomQuestions.forEach((question, index) => {
+        console.log(`Question ${index + 1}: ${question}`);
+    });
+}
