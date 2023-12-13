@@ -22,29 +22,36 @@ let questions = new Map([
 
 ]);
 
-
-function setLocalStorage(){
+//Adding name and question number to Local Storage
+const setLocalStorage=()=>{
         let name=document.getElementById('firstName').value;
         let noOfQuestions=document.getElementById('number').value;
         localStorage.setItem("name", name);
         localStorage.setItem("questions",noOfQuestions)
 
 }
-function getLocalStorageName(){
+//get name from Local Storage
+
+const getLocalStorageName=()=>{
         let name=localStorage.getItem('name');
         console.log(name);
         return name;
 }
-function getLocalStorageQuestions(){
+//get number of questions from Local Storage
+
+const getLocalStorageQuestions=()=>{
     let questions=localStorage.getItem('questions');
     console.log(questions);
     return questions;
 }
 
+//sample console printing of name and questions from local storage
 getLocalStorageName();
 getLocalStorageQuestions();
 
-function generateRandomQuestion(){
+//generate random questions 
+
+const generateRandomQuestion=()=>{
     function getRandomQuestions(questionsMap, n) {
         const questionsArray = Array.from(questionsMap.values());
         const selectedQuestions = [];
@@ -58,7 +65,7 @@ function generateRandomQuestion(){
         return selectedQuestions;
     }
 
-    // Example: Display 5 random questions
+// Example: Display 5 random questions
     let numberOfQuestions = getLocalStorageQuestions();
     const randomQuestions = getRandomQuestions(questions, numberOfQuestions);
 
