@@ -21,26 +21,27 @@ let questions = new Map([
     [10, "Where is Amazon River?"]
 
 ]);
+let answers = new Map([[1, "Asia"], [2, "Asia"], [3, "Australia"], [4, "Australia"], [5, "Asia"], [6, "Africa"], [7, "Europe"], [8, "Africa"], [9, "North America"], [10, "South America"]])
 
 //Adding name and question number to Local Storage
-const setLocalStorage=()=>{
-        let name=document.getElementById('firstName').value;
-        let noOfQuestions=document.getElementById('number').value;
-        localStorage.setItem("name", name);
-        localStorage.setItem("questions",noOfQuestions)
+const setLocalStorage = () => {
+    let name = document.getElementById('firstName').value;
+    let noOfQuestions = document.getElementById('number').value;
+    localStorage.setItem("name", name);
+    localStorage.setItem("questions", noOfQuestions)
 
 }
 //get name from Local Storage
 
-const getLocalStorageName=()=>{
-        let name=localStorage.getItem('name');
-        console.log(name);
-        return name;
+const getLocalStorageName = () => {
+    let name = localStorage.getItem('name');
+    console.log(name);
+    return name;
 }
 //get number of questions from Local Storage
 
-const getLocalStorageQuestions=()=>{
-    let questions=localStorage.getItem('questions');
+const getLocalStorageQuestions = () => {
+    let questions = localStorage.getItem('questions');
     console.log(questions);
     return questions;
 }
@@ -49,27 +50,34 @@ const getLocalStorageQuestions=()=>{
 getLocalStorageName();
 getLocalStorageQuestions();
 
-//generate random questions 
+//generate random questions with answers on an object array 
 
-const generateRandomQuestion=()=>{
-    function getRandomQuestions(questionsMap, n) {
-        const questionsArray = Array.from(questionsMap.values());
-        const selectedQuestions = [];
+let getRandomQuestions=(questionsMap, answersMap, n)=> {
+    const questionsArray = Array.from(questionsMap.values());
+    const answersArray = Array.from(answersMap.values());
 
-        while (selectedQuestions.length < n && questionsArray.length > 0) {
-            const randomIndex = Math.floor(Math.random() * questionsArray.length);
-            const randomQuestion = questionsArray.splice(randomIndex, 1)[0];
-            selectedQuestions.push(randomQuestion);
-        }
+    const selectedQuestions = [];
 
-        return selectedQuestions;
+    while (selectedQuestions.length < n && questionsArray.length > 0) {
+        let object = {};
+        let randomIndex = Math.floor(Math.random() * questionsArray.length);
+        // console.log(randomIndex);
+        let randomQuestion = questionsArray.splice(randomIndex, 1)[0];
+        let answer = answersArray.splice(randomIndex, 1)[0];
+
+        object["question"] = randomQuestion;
+        object["answer"] = answer;
+        selectedQuestions.push(object);
+        // console.log(selectedQuestions)
+        // console.log(object)
     }
 
-// Example: Display 5 random questions
-    let numberOfQuestions = getLocalStorageQuestions();
-    const randomQuestions = getRandomQuestions(questions, numberOfQuestions);
-
-    randomQuestions.forEach((question, index) => {
-        console.log(`Question ${index + 1}: ${question}`);
-    });
+    return selectedQuestions;
 }
+
+//call random questions into an array 
+const generateRandomQuestion = () => {
+    let numberOfQuestions = getLocalStorageQuestions();
+    getRandomQuestions(questions, answers, numberOfQuestions);
+}
+generateRandomQuestion();
