@@ -35,6 +35,10 @@ let answers = new Map([
     [10, "South America"],
 ]);
 
+const selectedQuestions = [];
+let counter = 0;
+let scoreCount = 0;
+
 //Adding name and question number to Local Storage
 const setLocalStorage = () => {
     let name = document.getElementById("firstName").value;
@@ -42,57 +46,47 @@ const setLocalStorage = () => {
     localStorage.setItem("name", name);
     localStorage.setItem("questions", noOfQuestions);
 };
-//get name from Local Storage
 
+//get name from Local Storage
 const getLocalStorageName = () => {
     let name = localStorage.getItem("name");
     console.log(name);
     return name;
 };
-//get number of questions from Local Storage
 
+//get number of questions from Local Storage
 const getLocalStorageQuestions = () => {
     let questions = localStorage.getItem("questions");
-    console.log(questions);
     return questions;
 };
 
-//sample console printing of name and questions from local storage
-// getLocalStorageName();
-// getLocalStorageQuestions();
-
 //generate random questions with answers on an object array
-const selectedQuestions = [];
-let counter = 0;
-let scoreCount = 0;
-
-let getRandomQuestions = (questionsMap, answersMap, n) => {
+const getRandomQuestions = (questionsMap, answersMap, n) => {
     const questionsArray = Array.from(questionsMap.values());
     const answersArray = Array.from(answersMap.values());
 
     while (selectedQuestions.length < n && questionsArray.length > 0) {
         let object = {};
         let randomIndex = Math.floor(Math.random() * questionsArray.length);
-        // console.log(randomIndex);
         let randomQuestion = questionsArray.splice(randomIndex, 1)[0];
         let answer = answersArray.splice(randomIndex, 1)[0];
 
         object["question"] = randomQuestion;
         object["answer"] = answer;
         selectedQuestions.push(object);
-        // console.log(selectedQuestions)
-        // console.log(object)
     }
 
     return selectedQuestions;
 };
 
-//call random questions into an array
-const generateRandomQuestion = () => {
+//call random questions into an array and show first question
+const initializeFirstQuestion = () => {
     getRandomQuestions(questions, answers, getLocalStorageQuestions());
-    setNextQuestion(new Event("dummy"));
+    setNextQuestion(new Event("dummyEvent")); 5
 };
 
+
+// Show the Next question to the user
 const setNextQuestion = (event) => {
     event.preventDefault();
     document.getElementById("question-header").textContent =
@@ -100,16 +94,21 @@ const setNextQuestion = (event) => {
     document.getElementById("answer-status").textContent = "";
     document.getElementById("next-question-button").classList.add("disabled");
     counter++;
+    enableMap()
 };
+
+
+//Check if the user's Answer is right or wrong
 const checkAnswer = (event, continentId) => {
     event.preventDefault();
+
     document.getElementById("next-question-button").classList.remove("disabled");
     if (counter == getLocalStorageQuestions()) {
         document
             .getElementById("next-question-button")
             .setAttribute("onclick", "showResults(event);");
         document
-            .getElementById("next-question-button").textContent="Show Results"
+            .getElementById("next-question-button").textContent = "Show Results"
     }
 
     if (continentId == selectedQuestions[counter - 1]["answer"]) {
@@ -124,9 +123,24 @@ const checkAnswer = (event, continentId) => {
             .getElementById("answer-status")
             .setAttribute("class", "card-text text-danger mb-4");
     }
+    disableMap() // Prevent multiple clicks to avoid spam.
 };
 
+// Function to handle score display, check highscore 
 const showResults = (event) => {
     event.preventDefault();
-    console.log("Do score printing here");
+}
+
+//Helper function to disable clicking, once an answer is selected
+const disableMap = () => {
+    let areaList = document.querySelector("map").querySelectorAll("area")
+    areaList.forEach(area => area.removeAttribute("href"))
+    areaList.forEach(area => area.removeAttribute("onclick"))
+}
+
+//Helper function to re-enable the disabled clickings
+const enableMap = () => {
+    let areaList = document.querySelector("map").querySelectorAll("area")
+    areaList.forEach(area => area.setAttribute("href", ""))
+    areaList.forEach(area => area.setAttribute("onclick", "checkAnswer(event,this.id);"))
 }
