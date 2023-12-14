@@ -61,11 +61,11 @@ const getLocalStorageQuestions = () => {
 };
 
 //generate random questions with answers on an object array
-const getRandomQuestions = (questionsMap, answersMap, n) => {
+const getRandomQuestions = (questionsMap, answersMap, noOfQuestions) => {
     const questionsArray = Array.from(questionsMap.values());
     const answersArray = Array.from(answersMap.values());
 
-    while (selectedQuestions.length < n && questionsArray.length > 0) {
+    while (selectedQuestions.length < noOfQuestions && questionsArray.length > 0) {
         let object = {};
         let randomIndex = Math.floor(Math.random() * questionsArray.length);
         let randomQuestion = questionsArray.splice(randomIndex, 1)[0];
@@ -82,7 +82,7 @@ const getRandomQuestions = (questionsMap, answersMap, n) => {
 //call random questions into an array and show first question
 const initializeFirstQuestion = () => {
     getRandomQuestions(questions, answers, getLocalStorageQuestions());
-    setNextQuestion(new Event("dummyEvent")); 5
+    setNextQuestion(new Event("window"));
 };
 
 
@@ -103,10 +103,13 @@ const checkAnswer = (event, continentId) => {
     event.preventDefault();
 
     document.getElementById("next-question-button").classList.remove("disabled");
+    // change button attributes on last question
     if (counter == getLocalStorageQuestions()) {
         document
             .getElementById("next-question-button")
             .setAttribute("onclick", "showResults(event);");
+        document.getElementById("next-question-button").setAttribute("data-bs-toggle", "modal");
+        document.getElementById("next-question-button").setAttribute("data-bs-target","#exampleModal");
         document
             .getElementById("next-question-button").textContent = "Show Results"
     }
@@ -129,6 +132,45 @@ const checkAnswer = (event, continentId) => {
 // Function to handle score display, check highscore 
 const showResults = (event) => {
     event.preventDefault();
+    let userName = getLocalStorageName();
+    let percentage = (scoreCount/getLocalStorageQuestions())*100
+
+    if(percentage==100){
+        let modelHeader=document.getElementById('exampleModalLabel');
+        modelHeader.textContent=`Amazing ${userName}`;
+        modelHeader.setAttribute("class","text-success");
+        let modelBody=document.getElementById('model-body');
+        modelBody.textContent=`You got ${percentage}%`;
+        let resultGif=document.createElement("img");
+        resultGif.setAttribute("src","./images/pass100.gif");
+        modelBody.appendChild(resultGif);
+    }
+
+    else if(percentage>=50){
+        let modelHeader=document.getElementById('exampleModalLabel');
+        modelHeader.textContent=`Congrats ${userName}`;
+        modelHeader.setAttribute("class","text-success");
+        let modelBody=document.getElementById('model-body');
+        modelBody.textContent=`You got ${percentage}%`;
+        let resultGif=document.createElement("img");
+        resultGif.setAttribute("src","./images/50pass.gif");
+        modelBody.appendChild(resultGif);
+    }
+
+    else{
+        let modelHeader=document.getElementById('exampleModalLabel');
+        modelHeader.textContent=`Badluck ${userName}`;
+        modelHeader.setAttribute("class","text-danger");
+        let modelBody=document.getElementById('model-body');
+        modelBody.textContent=`You got ${percentage}%`;
+        let resultGif=document.createElement("img");
+        resultGif.setAttribute("src","./images/fail.gif");
+        modelBody.appendChild(resultGif);
+    }
+    
+
+
+
 }
 
 //Helper function to disable clicking, once an answer is selected
@@ -144,3 +186,4 @@ const enableMap = () => {
     areaList.forEach(area => area.setAttribute("href", ""))
     areaList.forEach(area => area.setAttribute("onclick", "checkAnswer(event,this.id);"))
 }
+
