@@ -153,6 +153,7 @@ const showResults = (event) => {
         let modelBody=document.getElementById('model-body');
         modelBody.textContent=`You got ${percentage}%`;
         let resultGif=document.createElement("img");
+        resultGif.height=350;
         resultGif.setAttribute("src","./images/50pass.gif");
         modelBody.appendChild(resultGif);
     }
