@@ -156,11 +156,12 @@ const showResults = (event) => {
         resultGif.height=350;
         resultGif.setAttribute("src","./images/50pass.gif");
         modelBody.appendChild(resultGif);
+        
     }
 
     else{
         let modelHeader=document.getElementById('exampleModalLabel');
-        modelHeader.textContent=`Badluck ${userName}`;
+        modelHeader.textContent=`BadLuck ${userName}`;
         modelHeader.setAttribute("class","text-danger");
         let modelBody=document.getElementById('model-body');
         modelBody.textContent=`You got ${percentage}%`;
@@ -168,6 +169,7 @@ const showResults = (event) => {
         resultGif.setAttribute("src","./images/fail.gif");
         modelBody.appendChild(resultGif);
     }
+    checkHighScore(percentage);
     
 
 
@@ -186,5 +188,26 @@ const enableMap = () => {
     let areaList = document.querySelector("map").querySelectorAll("area")
     areaList.forEach(area => area.setAttribute("href", ""))
     areaList.forEach(area => area.setAttribute("onclick", "checkAnswer(event,this.id);"))
+}
+
+//Function to get the High Score from the Local Storage
+const getHighScoreLocal = () =>{
+    let highScore = localStorage.getItem("highScore");
+    return highScore;
+}
+
+//Function to Set or Update the High Score in the Local Storage
+const updateHighScoreLocal = (score) => {
+    localStorage.setItem("highScore", score);
+}
+
+//Function used to check if Current percentage is new highscore
+const checkHighScore = (percentage) =>{
+    if (percentage > getHighScoreLocal()){
+        updateHighScoreLocal(percentage);
+        let modelHighScore=document.getElementById('model-highScore');
+        modelHighScore.append("You have the New High Score!!!");
+        modelHighScore.setAttribute("class", "text-success");
+    }
 }
 
