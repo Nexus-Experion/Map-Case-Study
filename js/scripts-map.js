@@ -39,6 +39,17 @@ const selectedQuestions = [];
 let counter = 0;
 let scoreCount = 0;
 
+//condition checker
+let moveToNextPage=()=> {
+    var nameInputValue = document.getElementById("firstName").value;
+    var selectFieldValue = document.getElementById("number").value;
+    if (nameInputValue !== "" && selectFieldValue !== "") {
+      window.location.href = 'map.html'; 
+    } else {
+      alert("Please fill out all fields before moving to the next page.");
+    }
+  }
+
 //Adding name and question number to Local Storage
 const setLocalStorage = () => {
     let name = document.getElementById("firstName").value;
