@@ -105,7 +105,7 @@ const setNextQuestion = (event) => {
     void question.offsetWidth  // Trigger reflow to restart the animation
     question.classList.add('animate')
     question.textContent = selectedQuestions[counter]["question"];
-    document.getElementById("answer-status").textContent = "";
+    document.getElementById("answer-status").classList.add("invisible");
     document.getElementById("next-question-button").classList.add("disabled");
     counter++;
     enableMap()
@@ -129,15 +129,16 @@ const checkAnswer = (event, continentId) => {
     }
     let answer = document.getElementById("answer-status")
     answer.classList.remove('animate')
+    answer.classList.remove('invisible')
     void answer.offsetWidth
     if (continentId == selectedQuestions[counter - 1]["answer"]) {
         answer.textContent = "Correct";
-        answer.setAttribute("class", "card-text text-success mb-4 fw-bold animate");
+        answer.setAttribute("class", "card-text text-success fw-bold animate");
         scoreCount++;
         correctSound.play();
     } else {
         answer.textContent = "Wrong!";
-        answer.setAttribute("class", "card-text text-danger mb-4 fw-bold animate");
+        answer.setAttribute("class", "card-text text-danger fw-bold animate");
         wrongSound.play();
     }
     disableMap() // Prevent multiple clicks to avoid spam.
@@ -187,7 +188,7 @@ const showResults = (event) => {
         })
 
     }
-
+    //Display medium-result in modal
     else if (percentage >= 50) {
         let modalHeader = document.getElementById('resultModalLabel');
         modalHeader.textContent = `Congrats ${userName}`;
@@ -212,7 +213,7 @@ const showResults = (event) => {
             });
 
     }
-
+    // Display  low-result in modal
     else {
         let modalHeader = document.getElementById('resultModalLabel');
         modalHeader.textContent = `BadLuck ${userName}`;
@@ -249,7 +250,7 @@ const getHighScoreLocal = () => {
     let highScore = localStorage.getItem("highScore");
     return highScore;
 }
-
+//get the local highscore username
 const getHighScoreLocalUser = () => {
     let highScoreUser = localStorage.getItem("highScoreUser");
     return highScoreUser;
@@ -263,25 +264,21 @@ const updateHighScoreLocal = (score, highScoreUser) => {
 
 //Function used to check if Current percentage is new highscore
 const checkHighScore = (percentage) => {
-
+    let modalHighScore = document.getElementById('modal-highScore');
+    modalHighScore.textContent="";
     if(getHighScoreLocal() == null){
         updateHighScoreLocal(percentage, getLocalStorageName());
-        let modalHighScore = document.getElementById('modal-highScore');
+        
         modalHighScore.append("You have the New High Score!!!");
     }
 
     else if (percentage > getHighScoreLocal()) {
-        let modalHighScore = document.getElementById('modal-highScore');
         modalHighScore.append(`You beat ${getHighScoreLocalUser()}'s High Score!!!`);
         modalHighScore.setAttribute("class", "text-success");
         updateHighScoreLocal(percentage, getLocalStorageName());
     }
-
     else{
-        currentHighScoreUser = getHighScoreLocalUser();
-        console.log(currentHighScoreUser);
-        let modalHighScore = document.getElementById('modal-highScore'); 
-        modalHighScore.append(currentHighScoreUser + " has the Current HighScore: " + getHighScoreLocal() + "%");
+        modalHighScore.append(getHighScoreLocalUser() + " has the Current HighScore: " + getHighScoreLocal() + "%");
     }
 }
 
