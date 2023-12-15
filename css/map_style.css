@@ -20,7 +20,7 @@ body {
 
 .map-container {
   border: 0;
-  scale: .8;
+  scale: .7;
   padding: 15px;
   background: #fff;
   border-radius: 0.5rem;
@@ -64,4 +64,9 @@ img[usemap] {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+#answer-status{
+  font-size: 50px !important;
+  margin-bottom: 0;
 }

@@ -94,7 +94,7 @@ h1 {
   color: white;
 }
 .styled-input input:hover {
-  color: black;
+  color: white;
 }
 .styled-input input,
 select {
