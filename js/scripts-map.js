@@ -123,7 +123,7 @@ const checkAnswer = (event, continentId) => {
             .getElementById("next-question-button")
             .setAttribute("onclick", "showResults(event);");
         document.getElementById("next-question-button").setAttribute("data-bs-toggle", "modal");
-        document.getElementById("next-question-button").setAttribute("data-bs-target", "#exampleModal");
+        document.getElementById("next-question-button").setAttribute("data-bs-target", "#resultModal");
         document
             .getElementById("next-question-button").textContent = "Show Results"
     }
@@ -149,7 +149,7 @@ const showResults = (event) => {
     let percentage = (scoreCount / getLocalStorageQuestions()) * 100
 
     if (percentage == 100) {
-        let modelHeader = document.getElementById('exampleModalLabel');
+        let modelHeader = document.getElementById('resultModalLabel');
         modelHeader.textContent = `Amazing ${userName}`;
         modelHeader.setAttribute("class", "text-success");
         let modelBody = document.getElementById('model-body');
@@ -160,7 +160,7 @@ const showResults = (event) => {
         //particles trial
         tsParticles
             .load({
-                id: "exampleModalLabel",
+                id: "resultModalLabel",
                 url: "./js/particles.json",
             })
             .then(container => {
@@ -173,7 +173,7 @@ const showResults = (event) => {
     }
 
     else if (percentage >= 50) {
-        let modelHeader = document.getElementById('exampleModalLabel');
+        let modelHeader = document.getElementById('resultModalLabel');
         modelHeader.textContent = `Congrats ${userName}`;
         modelHeader.setAttribute("class", "text-success");
         let modelBody = document.getElementById('model-body');
@@ -186,7 +186,7 @@ const showResults = (event) => {
     }
 
     else {
-        let modelHeader = document.getElementById('exampleModalLabel');
+        let modelHeader = document.getElementById('resultModalLabel');
         modelHeader.textContent = `BadLuck ${userName}`;
         modelHeader.setAttribute("class", "text-danger");
         let modelBody = document.getElementById('model-body');
