@@ -118,3 +118,32 @@ a:hover {
   cursor: pointer;
   scale: 1.2;
 }
+
+.modal-dialog,
+.modal-content {
+  background-color: #212529 !important;
+}
+
+.modal-content,
+.close {
+  color: white;
+}
+
+.close:hover {
+  color: #bc8cff;
+}
+.modal p {
+  text-align: center;
+  padding-top: 30px;
+}
+.modal h6 {
+  padding-left: 15px;
+  margin-bottom: 15px;
+}
+.modal-img {
+  object-fit: cover;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  margin-top: 30px;
+}
