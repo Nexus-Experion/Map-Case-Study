@@ -134,12 +134,27 @@ const checkAnswer = (event, continentId) => {
         answer.textContent = "Correct";
         answer.setAttribute("class", "card-text text-success mb-4 fw-bold animate");
         scoreCount++;
+        correctSound.play();
     } else {
         answer.textContent = "Wrong!";
         answer.setAttribute("class", "card-text text-danger mb-4 fw-bold animate");
+        wrongSound.play();
     }
     disableMap() // Prevent multiple clicks to avoid spam.
 };
+// Functions for playing sound.
+const correctSound = new Audio('./audios/correct.wav');
+const wrongSound = new Audio('./audios/wrong.wav');
+const hundredSound = new Audio('./audios/100sound.mp3');
+function playCorrectSound() {
+    correctSound.play();
+}
+function playWrongSound() {
+    wrongSound.play();
+}
+function play100Sound() {
+    hundredSound.play();
+}
 
 // Function to handle score display, check highscore 
 const showResults = (event) => {
@@ -157,18 +172,19 @@ const showResults = (event) => {
         let resultGif = document.createElement("img");
         resultGif.setAttribute("src", "./images/pass100.gif");
         modalBody.appendChild(resultGif);
+        hundredSound.play();
         //particles trial
         tsParticles
-            .load({
-                id: "resultModalLabel",
-                url: "./js/particles.json",
-            })
-            .then(container => {
-                console.log("callback - tsparticles config loaded");
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        .load({
+            id: "resultModalLabel",
+            url: "./js/particlesFireworks.json",
+        })
+        .then(container => {
+            console.log("callback - tsparticles config loaded");
+        })
+        .catch(error => {
+            console.error(error);
+        })
 
     }
 
@@ -182,6 +198,18 @@ const showResults = (event) => {
         resultGif.height = 350;
         resultGif.setAttribute("src", "./images/50pass.gif");
         modalBody.appendChild(resultGif);
+        //particles trial
+        tsParticles
+            .load({
+                id: "resultModalLabel",
+                url: "./js/particles.json",
+            })
+            .then(container => {
+                console.log("callback - tsparticles config loaded");
+            })
+            .catch(error => {
+                console.error(error);
+            });
 
     }
 
