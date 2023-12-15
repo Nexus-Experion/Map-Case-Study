@@ -149,14 +149,14 @@ const showResults = (event) => {
     let percentage = (scoreCount / getLocalStorageQuestions()) * 100
 
     if (percentage == 100) {
-        let modelHeader = document.getElementById('resultModalLabel');
-        modelHeader.textContent = `Amazing ${userName}`;
-        modelHeader.setAttribute("class", "text-success");
-        let modelBody = document.getElementById('model-body');
-        modelBody.textContent = `You got ${percentage}%`;
+        let modalHeader = document.getElementById('resultModalLabel');
+        modalHeader.textContent = `Amazing ${userName}`;
+        modalHeader.setAttribute("class", "text-success");
+        let modalBody = document.getElementById('modal-body');
+        modalBody.textContent = `You got ${percentage}%`;
         let resultGif = document.createElement("img");
         resultGif.setAttribute("src", "./images/pass100.gif");
-        modelBody.appendChild(resultGif);
+        modalBody.appendChild(resultGif);
         //particles trial
         tsParticles
             .load({
@@ -173,27 +173,27 @@ const showResults = (event) => {
     }
 
     else if (percentage >= 50) {
-        let modelHeader = document.getElementById('resultModalLabel');
-        modelHeader.textContent = `Congrats ${userName}`;
-        modelHeader.setAttribute("class", "text-success");
-        let modelBody = document.getElementById('model-body');
-        modelBody.textContent = `You got ${percentage}%`;
+        let modalHeader = document.getElementById('resultModalLabel');
+        modalHeader.textContent = `Congrats ${userName}`;
+        modalHeader.setAttribute("class", "text-success");
+        let modalBody = document.getElementById('modal-body');
+        modalBody.textContent = `You got ${percentage}%`;
         let resultGif = document.createElement("img");
         resultGif.height = 350;
         resultGif.setAttribute("src", "./images/50pass.gif");
-        modelBody.appendChild(resultGif);
+        modalBody.appendChild(resultGif);
 
     }
 
     else {
-        let modelHeader = document.getElementById('resultModalLabel');
-        modelHeader.textContent = `BadLuck ${userName}`;
-        modelHeader.setAttribute("class", "text-danger");
-        let modelBody = document.getElementById('model-body');
-        modelBody.textContent = `You got ${percentage}%`;
+        let modalHeader = document.getElementById('resultModalLabel');
+        modalHeader.textContent = `BadLuck ${userName}`;
+        modalHeader.setAttribute("class", "text-danger");
+        let modalBody = document.getElementById('modal-body');
+        modalBody.textContent = `You got ${percentage}%`;
         let resultGif = document.createElement("img");
         resultGif.setAttribute("src", "./images/fail.gif");
-        modelBody.appendChild(resultGif);
+        modalBody.appendChild(resultGif);
     }
     checkHighScore(percentage);
 
@@ -231,9 +231,9 @@ const updateHighScoreLocal = (score) => {
 const checkHighScore = (percentage) => {
     if (percentage > getHighScoreLocal()) {
         updateHighScoreLocal(percentage);
-        let modelHighScore = document.getElementById('model-highScore');
-        modelHighScore.append("You have the New High Score!!!");
-        modelHighScore.setAttribute("class", "text-success");
+        let modalHighScore = document.getElementById('modal-highScore');
+        modalHighScore.append("You have the New High Score!!!");
+        modalHighScore.setAttribute("class", "text-success");
     }
 }
 
