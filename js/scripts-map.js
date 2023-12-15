@@ -40,15 +40,15 @@ let counter = 0;
 let scoreCount = 0;
 
 //condition checker
-let moveToNextPage=()=> {
+let moveToNextPage = () => {
     var nameInputValue = document.getElementById("firstName").value;
     var selectFieldValue = document.getElementById("number").value;
     if (nameInputValue !== "" && selectFieldValue !== "") {
-      window.location.href = 'map.html'; 
+        window.location.href = 'map.html';
     } else {
-      alert("Please fill out all fields before moving to the next page.");
+        alert("Please fill out all fields before moving to the next page.");
     }
-  }
+}
 
 //Adding name and question number to Local Storage
 const setLocalStorage = () => {
@@ -100,8 +100,11 @@ const initializeFirstQuestion = () => {
 // Show the Next question to the user
 const setNextQuestion = (event) => {
     event.preventDefault();
-    document.getElementById("question-header").textContent =
-        selectedQuestions[counter]["question"];
+    let question = document.getElementById("question-header")
+    question.classList.remove('animate')
+    void question.offsetWidth  // Trigger reflow to restart the animation
+    question.classList.add('animate')
+    question.textContent = selectedQuestions[counter]["question"];
     document.getElementById("answer-status").textContent = "";
     document.getElementById("next-question-button").classList.add("disabled");
     counter++;
@@ -120,22 +123,20 @@ const checkAnswer = (event, continentId) => {
             .getElementById("next-question-button")
             .setAttribute("onclick", "showResults(event);");
         document.getElementById("next-question-button").setAttribute("data-bs-toggle", "modal");
-        document.getElementById("next-question-button").setAttribute("data-bs-target","#exampleModal");
+        document.getElementById("next-question-button").setAttribute("data-bs-target", "#resultModal");
         document
             .getElementById("next-question-button").textContent = "Show Results"
     }
-
+    let answer = document.getElementById("answer-status")
+    answer.classList.remove('animate')
+    void answer.offsetWidth
     if (continentId == selectedQuestions[counter - 1]["answer"]) {
-        document.getElementById("answer-status").textContent = "Success";
-        document
-            .getElementById("answer-status")
-            .setAttribute("class", "card-text text-success mb-4");
+        answer.textContent = "Success";
+        answer.setAttribute("class", "card-text text-success mb-4 fw-bold animate");
         scoreCount++;
     } else {
-        document.getElementById("answer-status").textContent = "Wrong!";
-        document
-            .getElementById("answer-status")
-            .setAttribute("class", "card-text text-danger mb-4");
+        answer.textContent = "Wrong!";
+        answer.setAttribute("class", "card-text text-danger mb-4 fw-bold animate");
     }
     disableMap() // Prevent multiple clicks to avoid spam.
 };
@@ -143,45 +144,59 @@ const checkAnswer = (event, continentId) => {
 // Function to handle score display, check highscore 
 const showResults = (event) => {
     event.preventDefault();
+
     let userName = getLocalStorageName();
-    let percentage = (scoreCount/getLocalStorageQuestions())*100
+    let percentage = (scoreCount / getLocalStorageQuestions()) * 100
 
-    if(percentage==100){
-        let modelHeader=document.getElementById('exampleModalLabel');
-        modelHeader.textContent=`Amazing ${userName}`;
-        modelHeader.setAttribute("class","text-success");
-        let modelBody=document.getElementById('model-body');
-        modelBody.textContent=`You got ${percentage}%`;
-        let resultGif=document.createElement("img");
-        resultGif.setAttribute("src","./images/pass100.gif");
-        modelBody.appendChild(resultGif);
+    if (percentage == 100) {
+        let modalHeader = document.getElementById('resultModalLabel');
+        modalHeader.textContent = `Amazing ${userName}`;
+        modalHeader.setAttribute("class", "text-success");
+        let modalBody = document.getElementById('modal-body');
+        modalBody.textContent = `You got ${percentage}%`;
+        let resultGif = document.createElement("img");
+        resultGif.setAttribute("src", "./images/pass100.gif");
+        modalBody.appendChild(resultGif);
+        //particles trial
+        tsParticles
+            .load({
+                id: "resultModalLabel",
+                url: "./js/particles.json",
+            })
+            .then(container => {
+                console.log("callback - tsparticles config loaded");
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
     }
 
-    else if(percentage>=50){
-        let modelHeader=document.getElementById('exampleModalLabel');
-        modelHeader.textContent=`Congrats ${userName}`;
-        modelHeader.setAttribute("class","text-success");
-        let modelBody=document.getElementById('model-body');
-        modelBody.textContent=`You got ${percentage}%`;
-        let resultGif=document.createElement("img");
-        resultGif.height=350;
-        resultGif.setAttribute("src","./images/50pass.gif");
-        modelBody.appendChild(resultGif);
-        
+    else if (percentage >= 50) {
+        let modalHeader = document.getElementById('resultModalLabel');
+        modalHeader.textContent = `Congrats ${userName}`;
+        modalHeader.setAttribute("class", "text-success");
+        let modalBody = document.getElementById('modal-body');
+        modalBody.textContent = `You got ${percentage}%`;
+        let resultGif = document.createElement("img");
+        resultGif.height = 350;
+        resultGif.setAttribute("src", "./images/50pass.gif");
+        modalBody.appendChild(resultGif);
+
     }
 
-    else{
-        let modelHeader=document.getElementById('exampleModalLabel');
-        modelHeader.textContent=`BadLuck ${userName}`;
-        modelHeader.setAttribute("class","text-danger");
-        let modelBody=document.getElementById('model-body');
-        modelBody.textContent=`You got ${percentage}%`;
-        let resultGif=document.createElement("img");
-        resultGif.setAttribute("src","./images/fail.gif");
-        modelBody.appendChild(resultGif);
+    else {
+        let modalHeader = document.getElementById('resultModalLabel');
+        modalHeader.textContent = `BadLuck ${userName}`;
+        modalHeader.setAttribute("class", "text-danger");
+        let modalBody = document.getElementById('modal-body');
+        modalBody.textContent = `You got ${percentage}%`;
+        let resultGif = document.createElement("img");
+        resultGif.setAttribute("src", "./images/fail.gif");
+        modalBody.appendChild(resultGif);
     }
     checkHighScore(percentage);
-    
+
 
 
 
@@ -202,7 +217,7 @@ const enableMap = () => {
 }
 
 //Function to get the High Score from the Local Storage
-const getHighScoreLocal = () =>{
+const getHighScoreLocal = () => {
     let highScore = localStorage.getItem("highScore");
     return highScore;
 }
@@ -213,12 +228,12 @@ const updateHighScoreLocal = (score) => {
 }
 
 //Function used to check if Current percentage is new highscore
-const checkHighScore = (percentage) =>{
-    if (percentage > getHighScoreLocal()){
+const checkHighScore = (percentage) => {
+    if (percentage > getHighScoreLocal()) {
         updateHighScoreLocal(percentage);
-        let modelHighScore=document.getElementById('model-highScore');
-        modelHighScore.append("You have the New High Score!!!");
-        modelHighScore.setAttribute("class", "text-success");
+        let modalHighScore = document.getElementById('modal-highScore');
+        modalHighScore.append("You have the New High Score!!!");
+        modalHighScore.setAttribute("class", "text-success");
     }
 }
 
